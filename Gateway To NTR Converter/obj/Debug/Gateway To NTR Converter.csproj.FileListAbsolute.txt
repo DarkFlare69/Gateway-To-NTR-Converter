@@ -1,0 +1,10 @@
+D:\VS\Gateway To NTR Converter\Gateway To NTR Converter\bin\Debug\Gateway To NTR Converter.exe.config
+D:\VS\Gateway To NTR Converter\Gateway To NTR Converter\bin\Debug\Gateway To NTR Converter.exe
+D:\VS\Gateway To NTR Converter\Gateway To NTR Converter\bin\Debug\Gateway To NTR Converter.pdb
+D:\VS\Gateway To NTR Converter\Gateway To NTR Converter\obj\Debug\Gateway_To_NTR_Converter.Form1.resources
+D:\VS\Gateway To NTR Converter\Gateway To NTR Converter\obj\Debug\Gateway_To_NTR_Converter.Properties.Resources.resources
+D:\VS\Gateway To NTR Converter\Gateway To NTR Converter\obj\Debug\Gateway To NTR Converter.csproj.GenerateResource.Cache
+D:\VS\Gateway To NTR Converter\Gateway To NTR Converter\obj\Debug\Gateway To NTR Converter.csproj.CoreCompileInputs.cache
+D:\VS\Gateway To NTR Converter\Gateway To NTR Converter\obj\Debug\Gateway To NTR Converter.exe
+D:\VS\Gateway To NTR Converter\Gateway To NTR Converter\obj\Debug\Gateway To NTR Converter.pdb
+D:\VS\Gateway To NTR Converter\Gateway To NTR Converter\obj\Debug\Gateway To NTR Converter.csprojResolveAssemblyReference.cache
