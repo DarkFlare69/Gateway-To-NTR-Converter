@@ -106,7 +106,7 @@ namespace Gateway_To_NTR_Converter
                     var regex = new Regex(Regex.Escape("DD000000 "));
                     temp = regex.Replace(line, "if (is_pressed(0x", 1);
                     result += temp;
-                    result += ")" + System.Environment.NewLine;
+                    result += "))" + System.Environment.NewLine;
                     result += new String('\t', Tabs);
                     result += "{" + System.Environment.NewLine;
                     Tabs++;
