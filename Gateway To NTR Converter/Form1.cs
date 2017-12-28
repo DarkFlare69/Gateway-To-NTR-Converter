@@ -39,6 +39,8 @@ namespace Gateway_To_NTR_Converter
 
             int Tabs = 0;
 
+            bool loop = false;
+
             while (true)
             {
                 line = LineString.ReadLine();
@@ -58,7 +60,7 @@ namespace Gateway_To_NTR_Converter
                 }
                 if (line.StartsWith("["))
                 {
-                    temp = line.Replace(" ", "_").Replace("+", "_").Replace("+", "_").Replace("-", "_"); // add more exceptions
+                    temp = line.Replace(" ", "_").Replace("+", "_").Replace("+", "_").Replace("-", "_").Replace(".", "_").Replace("1", "One").Replace("2", "Two").Replace("3", "Three").Replace("4", "Four").Replace("5", "Five").Replace("6", "Six").Replace("7", "Seven").Replace("8", "Eight").Replace("9", "Nine").Replace("0", "Zero"); // add more exceptions
                     temp = temp.Replace("[", "void\t").Replace("]", "(void)" + System.Environment.NewLine + "{" + System.Environment.NewLine);
                     Tabs = 1;
 
@@ -243,12 +245,14 @@ namespace Gateway_To_NTR_Converter
                     result += temp;
                     textBox2.Text += result;
                 }
-                if (line.StartsWith("C000")) // loop, work on later
+                if (line.StartsWith("C0000000")) // loop test
                 {
+                    loop = true;
                     string result = new String('\t', Tabs);
-                    var regex = new Regex(Regex.Escape("DC000000 "));
-                    temp = regex.Replace(line, "offset += 0x", 1);
-                    temp += ";";
+                    var regex = new Regex(Regex.Escape("C0000000 "));
+                    temp = regex.Replace(line, "for (int i = 0; i < 0x", 1);
+                    temp += "; i++)" + System.Environment.NewLine + result + "{" + System.Environment.NewLine;
+                    Tabs++;
                     result += temp;
                     textBox2.Text += result;
                 }
@@ -259,22 +263,25 @@ namespace Gateway_To_NTR_Converter
                     result += "}" + System.Environment.NewLine;
                     textBox2.Text += result;
                 }
-                if (line.StartsWith("D1000000")) // loop, work on later
+                if (line.StartsWith("D1000000")) // execute loop again, work on later
                 {
-                    Tabs--;
                     string result = new String('\t', Tabs);
-                    result += "}" + System.Environment.NewLine;
+                    result += "continue;" + System.Environment.NewLine;
                     textBox2.Text += result;
                 }
 
                 if (line.StartsWith("D2000000") && Tabs != 0) // terminator
                 {
-                    string result = new String('\t', Tabs);
-                    result += "offset = 0;" + System.Environment.NewLine + result + "data = 0;" + System.Environment.NewLine;
-                    textBox2.Text += result;
+                    if (!loop) // do not reset offset during a loop
+                    {
+                        string result = new String('\t', Tabs);
+                        result += "offset = 0;" + System.Environment.NewLine + result + "data = 0;" + System.Environment.NewLine;
+                        textBox2.Text += result;
+                    }
+                    loop = false;
                     for (int i = 1; i < Tabs; i++)
                     {
-                        result = new String('\t', (Tabs - i));
+                        string result = new String('\t', (Tabs - i));
                         result += "}" + System.Environment.NewLine;
                         textBox2.Text += result;
                     }
@@ -347,9 +354,11 @@ namespace Gateway_To_NTR_Converter
                 if (line.StartsWith("E")) // memory patch, work on later
                 {
                     string result = new String('\t', Tabs);
-                    var regex = new Regex(Regex.Escape("DA000000 "));
-                    temp = regex.Replace(line, "data = READU8(offset + 0x", 1);
-                    result += temp + ");" + System.Environment.NewLine;
+                    var regex = new Regex(Regex.Escape("E"));
+                    temp = regex.Replace(line, "unsigned int patch_address = 0x", 1);
+                    String address = temp.Substring(0, (temp.Length - 9));
+                    result += address + ";" + System.Environment.NewLine;
+                    String value = line.Substring(9);
                     textBox2.Text += result;
                 }
                 if (line.StartsWith("F")) // memory copy
@@ -442,7 +451,7 @@ namespace Gateway_To_NTR_Converter
                 if (line.StartsWith("["))
                 {
                     String originalTitle = line.Replace("[", "").Replace("]", "");
-                    String newTitle = originalTitle.Replace(" ", "_").Replace("+", "_").Replace("+", "_").Replace("-", "_");
+                    String newTitle = originalTitle.Replace(" ", "_").Replace("+", "_").Replace("+", "_").Replace("-", "_").Replace(".", "_").Replace("1", "One").Replace("2", "Two").Replace("3", "Three").Replace("4", "Four").Replace("5", "Five").Replace("6", "Six").Replace("7", "Seven").Replace("8", "Eight").Replace("9", "Nine").Replace("0", "Zero");
                     String MenuEntry = "\tnew_entry(\"" + originalTitle + "\", " + newTitle + ");" + System.Environment.NewLine;
                     create_menu_c += MenuEntry;
                 }
@@ -489,7 +498,7 @@ namespace Gateway_To_NTR_Converter
                     }
                     else
                     {
-                        MessageBox.Show("There appears to be a problem with your codes. Assuming you inputted actual codes, this is probably due to improper/missing titles or lack of space between codes.", "Results");
+                        MessageBox.Show("There appears to be a problem with your codes. Assuming you inputted actual codes, this is probably due to improper/missing titles or lack of space between codes. This also could be because you used a codetype that was not yet implemented.", "Results");
                     }
                     break;
                 }
@@ -500,6 +509,10 @@ namespace Gateway_To_NTR_Converter
                 if (line.StartsWith("[") && line.Contains("]"))
                 {
                     BracketCount++;
+                }
+                if (line.StartsWith("E"))
+                {
+                    BracketCount+= 500;
                 }
             }
         }
