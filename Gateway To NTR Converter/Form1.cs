@@ -60,7 +60,7 @@ namespace Gateway_To_NTR_Converter
                 }
                 if (line.StartsWith("["))
                 {
-                    temp = line.Replace(" ", "_").Replace("+", "_").Replace("+", "_").Replace("-", "_").Replace(".", "_").Replace("1", "One").Replace("2", "Two").Replace("3", "Three").Replace("4", "Four").Replace("5", "Five").Replace("6", "Six").Replace("7", "Seven").Replace("8", "Eight").Replace("9", "Nine").Replace("0", "Zero"); // add more exceptions
+                    temp = line.Replace("(", "_").Replace(")", "_").Replace(" ", "_").Replace("+", "_").Replace("+", "_").Replace("-", "_").Replace(".", "_").Replace("1", "One").Replace("2", "Two").Replace("3", "Three").Replace("4", "Four").Replace("5", "Five").Replace("6", "Six").Replace("7", "Seven").Replace("8", "Eight").Replace("9", "Nine").Replace("0", "Zero"); // add more exceptions
                     temp = temp.Replace("[", "void\t").Replace("]", "(void)" + System.Environment.NewLine + "{" + System.Environment.NewLine);
                     Tabs = 1;
 
@@ -451,7 +451,7 @@ namespace Gateway_To_NTR_Converter
                 if (line.StartsWith("["))
                 {
                     String originalTitle = line.Replace("[", "").Replace("]", "");
-                    String newTitle = originalTitle.Replace(" ", "_").Replace("+", "_").Replace("+", "_").Replace("-", "_").Replace(".", "_").Replace("1", "One").Replace("2", "Two").Replace("3", "Three").Replace("4", "Four").Replace("5", "Five").Replace("6", "Six").Replace("7", "Seven").Replace("8", "Eight").Replace("9", "Nine").Replace("0", "Zero");
+                    String newTitle = originalTitle.Replace("(", "_").Replace(")", "_").Replace(" ", "_").Replace("+", "_").Replace("+", "_").Replace("-", "_").Replace(".", "_").Replace("1", "One").Replace("2", "Two").Replace("3", "Three").Replace("4", "Four").Replace("5", "Five").Replace("6", "Six").Replace("7", "Seven").Replace("8", "Eight").Replace("9", "Nine").Replace("0", "Zero");
                     String MenuEntry = "\tnew_entry(\"" + originalTitle + "\", " + newTitle + ");" + System.Environment.NewLine;
                     create_menu_c += MenuEntry;
                 }
@@ -466,7 +466,7 @@ namespace Gateway_To_NTR_Converter
 
         private void informationToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("All codes need to have a name, enclosed in [brackets]." + System.Environment.NewLine + System.Environment.NewLine + "If a code does not convert properly, please leave a comment on my YouTube video." + System.Environment.NewLine + System.Environment.NewLine + "The Code Checker will only check certain elements of your input to ensure the codes will convert properly. This assumes your input is still valid codes.", "Information");
+            MessageBox.Show("Version 1.0.2\n\nAll codes need to have a name, enclosed in [brackets]." + System.Environment.NewLine + System.Environment.NewLine + "If a code does not convert properly, please leave a comment on my YouTube video." + System.Environment.NewLine + System.Environment.NewLine + "The Code Checker will only check certain elements of your input to ensure the codes will convert properly. This assumes your input is still valid codes.", "Information");
         }
 
         private void creditsToolStripMenuItem_Click(object sender, EventArgs e)
