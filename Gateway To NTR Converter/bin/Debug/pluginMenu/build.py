@@ -105,4 +105,4 @@ if (os.path.isfile("payload.bin")):
 if (os.path.isfile(NAME + ".map")):
 	run("rm *.map");
 
-printf("Done, enjoy your plugin!\n\n");
+printf("Plugin ready !\n\n");

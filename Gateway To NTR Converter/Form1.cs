@@ -2,6 +2,7 @@
 using System.IO;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
+using System.Text;
 
 namespace Gateway_To_NTR_Converter
 {
@@ -34,17 +35,17 @@ namespace Gateway_To_NTR_Converter
         {
             textBox2.Text = "";
             String temp = null;
-            string line = null;
+            String value = "";
+            String total = "";
+            String line = null;
             StringReader LineString = new StringReader(textBox1.Text);
-
             int Tabs = 0;
-
+            int e_code = 0;
             bool loop = false;
-
             while (true)
             {
                 line = LineString.ReadLine();
-                if ((line == "") && (Tabs != 0))
+                if (line == "" && Tabs != 0)
                 {
                     textBox2.Text += "}" + System.Environment.NewLine + System.Environment.NewLine;
                     Tabs--;
@@ -57,6 +58,62 @@ namespace Gateway_To_NTR_Converter
                         Tabs--;
                     }
                     break;
+                }
+                if (e_code > 0) // patch codes (0xE)
+                {
+                    line = line.Replace(" ", "");
+
+                    String start = "0x" + line.Remove(8, 8);
+                    String end = "0x" + line.Substring(8);
+
+                    int tmp = Convert.ToInt32(start, 16);
+                    var reversedBytes = System.Net.IPAddress.NetworkToHostOrder(tmp);
+                    start = reversedBytes.ToString("X").PadLeft(8, '0');
+
+                    tmp = Convert.ToInt32(end, 16);
+                    reversedBytes = System.Net.IPAddress.NetworkToHostOrder(tmp);
+                    end = reversedBytes.ToString("X").PadLeft(8, '0');
+
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 0; i < start.Length; i++)
+                    {
+                        if (i % 2 == 0)
+                            sb.Append(", 0x");
+                        sb.Append(start[i]);
+                    }
+                    start = sb.ToString();
+
+                    sb = new StringBuilder();
+                    for (int i = 0; i < end.Length; i++)
+                    {
+                        if (i % 2 == 0)
+                            sb.Append(", 0x");
+                        sb.Append(end[i]);
+                    }
+                    end = sb.ToString();
+
+                    if (!total.Contains("static const u8"))
+                    {
+                        total = new String('\t', Tabs) + "static const u8 buffer[] = {";
+                    }
+                    if (e_code != 0)
+                    {
+                        total += start;
+                        e_code--;
+                    }
+                    if (e_code != 0)
+                    {
+                        total += end;
+                        e_code--;
+                    }
+                    if (e_code < 1)
+                    {
+                        total += " };" + System.Environment.NewLine;
+                        total = total.Replace("{,", "{");
+                        textBox2.Text += total;
+                        textBox2.Text += new String('\t', Tabs) + "memcpy((void *)(patch_address + offset), buffer, " + value + ");" + System.Environment.NewLine;
+                    }
+                    continue;
                 }
                 if (line.StartsWith("["))
                 {
@@ -351,14 +408,17 @@ namespace Gateway_To_NTR_Converter
                     result += temp + ");" + System.Environment.NewLine;
                     textBox2.Text += result;
                 }
-                if (line.StartsWith("E")) // memory patch, work on later
+                if (line.StartsWith("E")) // memory patch
                 {
                     string result = new String('\t', Tabs);
                     var regex = new Regex(Regex.Escape("E"));
                     temp = regex.Replace(line, "unsigned int patch_address = 0x", 1);
                     String address = temp.Substring(0, (temp.Length - 9));
                     result += address + ";" + System.Environment.NewLine;
-                    String value = line.Substring(9);
+                    value = line.Substring(9);
+                    value = "0x" + value;
+                    e_code = Convert.ToInt32(value, 16);
+                    e_code /= 4;
                     textBox2.Text += result;
                 }
                 if (line.StartsWith("F")) // memory copy
