@@ -526,7 +526,7 @@ namespace Gateway_To_NTR_Converter
 
         private void informationToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Version 1.0.2\n\nAll codes need to have a name, enclosed in [brackets]." + System.Environment.NewLine + System.Environment.NewLine + "If a code does not convert properly, please leave a comment on my YouTube video." + System.Environment.NewLine + System.Environment.NewLine + "The Code Checker will only check certain elements of your input to ensure the codes will convert properly. This assumes your input is still valid codes.", "Information");
+            MessageBox.Show("Version 1.0.3\n\nAll codes need to have a name, enclosed in [brackets]." + System.Environment.NewLine + System.Environment.NewLine + "If a code does not convert properly, please leave a comment on my YouTube video." + System.Environment.NewLine + System.Environment.NewLine + "The Code Checker will only check certain elements of your input to ensure the codes will convert properly. This assumes your input is still valid codes.", "Information");
         }
 
         private void creditsToolStripMenuItem_Click(object sender, EventArgs e)
