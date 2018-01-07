@@ -38,12 +38,16 @@ namespace Gateway_To_NTR_Converter
             String value = "";
             String total = "";
             String line = null;
+            String current = "";
             StringReader LineString = new StringReader(textBox1.Text);
             int Tabs = 0;
+            int j = 0;
             int e_code = 0;
             bool loop = false;
             while (true)
             {
+                j++;
+                String iteration = j.ToString();
                 line = LineString.ReadLine();
                 if (line == "" && Tabs != 0)
                 {
@@ -94,7 +98,8 @@ namespace Gateway_To_NTR_Converter
 
                     if (!total.Contains("static const u8"))
                     {
-                        total = new String('\t', Tabs) + "static const u8 buffer[] = {";
+                        current = iteration;
+                        total = new String('\t', Tabs) + "static const u8 buffer" + current + "[] = {";
                     }
                     if (e_code != 0)
                     {
@@ -111,7 +116,8 @@ namespace Gateway_To_NTR_Converter
                         total += " };" + System.Environment.NewLine;
                         total = total.Replace("{,", "{");
                         textBox2.Text += total;
-                        textBox2.Text += new String('\t', Tabs) + "memcpy((void *)(patch_address + offset), buffer, " + value + ");" + System.Environment.NewLine;
+                        textBox2.Text += new String('\t', Tabs) + "memcpy((void *)(patch_address + offset), buffer" + current + ", " + value + ");" + System.Environment.NewLine;
+                        total = "";
                     }
                     continue;
                 }
@@ -412,7 +418,7 @@ namespace Gateway_To_NTR_Converter
                 {
                     string result = new String('\t', Tabs);
                     var regex = new Regex(Regex.Escape("E"));
-                    temp = regex.Replace(line, "unsigned int patch_address = 0x", 1);
+                    temp = regex.Replace(line, "patch_address = 0x", 1);
                     String address = temp.Substring(0, (temp.Length - 9));
                     result += address + ";" + System.Environment.NewLine;
                     value = line.Substring(9);
@@ -453,9 +459,9 @@ namespace Gateway_To_NTR_Converter
                         line = line.Replace("0x0", "0x");
                     }
                 }
-                if (line.Contains("0x)") || line.Contains("0x,") || line.Contains("0x;"))
+                if (line.Contains("0x)") || line.Contains("0x,") || line.Contains("0x;") || line.Contains("0x "))
                 {
-                    line = line.Replace("0x)", "0)").Replace("0x,", "0,").Replace("0x;", "0;");
+                    line = line.Replace("0x)", "0)").Replace("0x,", "0,").Replace("0x;", "0;").Replace("0x ", "0 ");
                 }
                 textBox2.Text += line + System.Environment.NewLine;
             }
@@ -476,7 +482,7 @@ namespace Gateway_To_NTR_Converter
 
         private void button5_Click(object sender, EventArgs e)
         {
-            String cheats_c = "#include \"cheats.h\"\n#include <stdbool.h>\n#include \"hid.h\"\n#include \"values.h\"\n#include <string.h>\n\nu32 offset = 0;\nu32 data = 0;\n\n";
+            String cheats_c = "#include \"cheats.h\"\n#include <stdbool.h>\n#include \"hid.h\"\n#include \"values.h\"\n#include <string.h>\n\nu32 offset = 0;\nu32 data = 0;\nu32 patch_address = 0;\n\n";
             cheats_c += textBox2.Text;
             File.WriteAllText(System.Environment.CurrentDirectory + "/pluginMenu/Sources/cheats.c", cheats_c);
             String cheats_h = "#ifndef CHEATS_H\n#define CHEATS_H\n\n#include \"plugin.h\"\n\n";
@@ -515,6 +521,16 @@ namespace Gateway_To_NTR_Converter
                     String MenuEntry = "\tnew_entry(\"" + originalTitle + "\", " + newTitle + ");" + System.Environment.NewLine;
                     create_menu_c += MenuEntry;
                 }
+                if (line.StartsWith("+"))
+                {
+                    line = line.Replace("+", "\tnew_spoiler(\"") + "\");" + System.Environment.NewLine;
+                    create_menu_c += line;
+                }
+                if (line.StartsWith("-"))
+                {
+                    line = "\texit_spoiler();" + System.Environment.NewLine;
+                    create_menu_c += line;
+                }
             }
             System.Diagnostics.Process.Start(System.Environment.CurrentDirectory + "/pluginMenu/build.bat");
         }
@@ -526,7 +542,7 @@ namespace Gateway_To_NTR_Converter
 
         private void informationToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Version 1.0.3\n\nAll codes need to have a name, enclosed in [brackets]." + System.Environment.NewLine + System.Environment.NewLine + "If a code does not convert properly, please leave a comment on my YouTube video." + System.Environment.NewLine + System.Environment.NewLine + "The Code Checker will only check certain elements of your input to ensure the codes will convert properly. This assumes your input is still valid codes.", "Information");
+            MessageBox.Show("Version 1.0.4\n\nAll codes need to have a name, enclosed in [brackets]." + System.Environment.NewLine + System.Environment.NewLine + "If a code does not convert properly, please leave a comment on my YouTube video." + System.Environment.NewLine + System.Environment.NewLine + "The Code Checker will only check certain elements of your input to ensure the codes will convert properly. This assumes your input is still valid codes.", "Information");
         }
 
         private void creditsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -569,10 +585,6 @@ namespace Gateway_To_NTR_Converter
                 if (line.StartsWith("[") && line.Contains("]"))
                 {
                     BracketCount++;
-                }
-                if (line.StartsWith("E"))
-                {
-                    BracketCount+= 500;
                 }
             }
         }
