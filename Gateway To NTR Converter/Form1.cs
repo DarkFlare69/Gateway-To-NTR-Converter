@@ -16,12 +16,12 @@ namespace Gateway_To_NTR_Converter
         private void button4_Click(object sender, EventArgs e)
         {
             this.button4.Click += new System.EventHandler(this.button4_Click);
-            OpenFileDialog theDialog = new OpenFileDialog();
-            theDialog.Title = "Open Text File";
-            theDialog.Filter = "TXT files|*.txt";
-            if (theDialog.ShowDialog() == DialogResult.OK)
+            OpenFileDialog dialogue = new OpenFileDialog();
+            dialogue.Title = "Open Text File";
+            dialogue.Filter = "TXT files|*.txt";
+            if (dialogue.ShowDialog() == DialogResult.OK)
             {
-                string filename = theDialog.FileName;
+                string filename = dialogue.FileName;
                 string[] filelines = File.ReadAllLines(filename);
                 textBox1.Text = "";
                 foreach (string line in filelines)
@@ -34,10 +34,10 @@ namespace Gateway_To_NTR_Converter
         private void button3_Click(object sender, EventArgs e) // conversions
         {
             textBox2.Text = "";
-            String temp = null;
+            String temp = "";
             String value = "";
             String total = "";
-            String line = null;
+            String line = "";
             String current = "";
             StringReader LineString = new StringReader(textBox1.Text);
             int Tabs = 0;
@@ -472,21 +472,24 @@ namespace Gateway_To_NTR_Converter
             if (textBox2.Text != "")
             {
                 Clipboard.SetText(textBox2.Text);
-                MessageBox.Show("Copied to Clipboard!");
+                MessageBox.Show("Copied to Clipboard!", "Copied");
             }
             else
             {
-                MessageBox.Show("Output cannot be empty!");
+                MessageBox.Show("Output cannot be empty!", "Error");
             }
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
+            String originalTitle = "";
+            String newTitle = "";
+            String create_menu_c = "";
+            String notes = "";
             String cheats_c = "#include \"cheats.h\"\n#include <stdbool.h>\n#include \"hid.h\"\n#include \"values.h\"\n#include <string.h>\n\nu32 offset = 0;\nu32 data = 0;\nu32 patch_address = 0;\n\n";
             cheats_c += textBox2.Text;
             File.WriteAllText(System.Environment.CurrentDirectory + "/pluginMenu/Sources/cheats.c", cheats_c);
             String cheats_h = "#ifndef CHEATS_H\n#define CHEATS_H\n\n#include \"plugin.h\"\n\n";
-            String create_menu_c = "#include \"cheats.h\"\n\n#define ENTRY_COUNT 300\n\ntypedef struct s_menu\n{\n\tint         count;\n\tint         status;\n\tu32         f[ENTRY_COUNT];\n\tu32         s[ENTRY_COUNT];\n\tint         a[ENTRY_COUNT];\n\tconst char  *t[ENTRY_COUNT];\n\tconst char  *n[ENTRY_COUNT];\n\tvoid        (*fp[ENTRY_COUNT])();\n}             t_menu;\n\n\ntypedef void    (*FuncPointer)(void);\nextern t_menu menu;\n\n\nvoid    new_super_unselectable_entry(char *str, FuncPointer function)\n{\n\tint index;\n\n\tindex = menu.count;\n\tif (index >= 300)\n\t\treturn;\n\tnew_unselectable_entry(str);\n\tmenu.f[index] |= BIT(0) | BIT(1);\n\tmenu.fp[index] = function;\n}\n\nvoid with_note_common(const char *name, const char *note, void (*cheatfunction)(void), int type)\n{\n\tint     index;\n\n\tif (type == 0)\n\t\tindex = new_entry((char *)name, cheatfunction);\n\telse if (type == 1)\n\t\tindex = new_radio_entry((char *)name, cheatfunction);\n\telse if (type == 2)\n\t\tindex = new_spoiler((char *)name);\n\telse return;\n\tset_note(note, index);\n}\n\ninline void new_entry_with_note(const char *name, const char *note, void (*cheatfunction)(void))\n{\n\twith_note_common(name, note, cheatfunction, 0);\n}\n\ninline void new_radio_entry_with_note(const char *name, const char *note, void (*cheatfunction)(void))\n{\n\twith_note_common(name, note, cheatfunction, 1);\n}\n\ninline void new_spoiler_with_note(const char *name, const char *note)\n{\n\twith_note_common(name, note, NULL, 2);\n}\n\nchar	*builder_name = \"" + textBox3.Text + "\";\n\n\t/* static const char * const code1 = \"This is a note for code1\";     #format: new_entry_with_note(\"Visible Code Name\", note_name, code_name); */\n\nvoid    my_menus(void)\n{\n";
             string line = null;
             StringReader LineString = new StringReader(textBox2.Text);
             while (true)
@@ -495,6 +498,7 @@ namespace Gateway_To_NTR_Converter
                 if (line == null)
                 {
                     cheats_h += "\n#endif\n";
+                    create_menu_c = "#include \"cheats.h\"\n\n#define ENTRY_COUNT 300\n\ntypedef struct s_menu\n{\n\tint         count;\n\tint         status;\n\tu32         f[ENTRY_COUNT];\n\tu32         s[ENTRY_COUNT];\n\tint         a[ENTRY_COUNT];\n\tconst char  *t[ENTRY_COUNT];\n\tconst char  *n[ENTRY_COUNT];\n\tvoid        (*fp[ENTRY_COUNT])();\n}             t_menu;\n\n\ntypedef void    (*FuncPointer)(void);\nextern t_menu menu;\n\n\nvoid    new_super_unselectable_entry(char *str, FuncPointer function)\n{\n\tint index;\n\n\tindex = menu.count;\n\tif (index >= 300)\n\t\treturn;\n\tnew_unselectable_entry(str);\n\tmenu.f[index] |= BIT(0) | BIT(1);\n\tmenu.fp[index] = function;\n}\n\nvoid with_note_common(const char *name, const char *note, void (*cheatfunction)(void), int type)\n{\n\tint     index;\n\n\tif (type == 0)\n\t\tindex = new_entry((char *)name, cheatfunction);\n\telse if (type == 1)\n\t\tindex = new_radio_entry((char *)name, cheatfunction);\n\telse if (type == 2)\n\t\tindex = new_spoiler((char *)name);\n\telse return;\n\tset_note(note, index);\n}\n\nvoid new_entry_with_note(const char *name, const char *note, void (*cheatfunction)(void))\n{\n\twith_note_common(name, note, cheatfunction, 0);\n}\n\nvoid new_radio_entry_with_note(const char *name, const char *note, void (*cheatfunction)(void))\n{\n\twith_note_common(name, note, cheatfunction, 1);\n}\n\nvoid new_spoiler_with_note(const char *name, const char *note)\n{\n\twith_note_common(name, note, NULL, 2);\n}\n\nchar	*builder_name = \"" + textBox3.Text + "\";\n\n\nvoid\tmy_menus(void)\n{\n";
                     File.WriteAllText(System.Environment.CurrentDirectory + "/pluginMenu/Sources/cheats.h", cheats_h);
 
                     break;
@@ -510,14 +514,15 @@ namespace Gateway_To_NTR_Converter
                 line = LineString.ReadLine();
                 if (line == null)
                 {
+                    create_menu_c = create_menu_c.Replace("char	*builder_name = \"" + textBox3.Text + "\";\n\n", "char	*builder_name = \"" + textBox3.Text + "\";\n\n" + notes);
                     create_menu_c += "}\n";
                     File.WriteAllText(System.Environment.CurrentDirectory + "/pluginMenu/Sources/create_menu.c", create_menu_c);
                     break;
                 }
                 if (line.StartsWith("["))
                 {
-                    String originalTitle = line.Replace("[", "").Replace("]", "");
-                    String newTitle = originalTitle.Replace("(", "_").Replace(")", "_").Replace(" ", "_").Replace("+", "_").Replace("+", "_").Replace("-", "_").Replace(".", "_").Replace("1", "One").Replace("2", "Two").Replace("3", "Three").Replace("4", "Four").Replace("5", "Five").Replace("6", "Six").Replace("7", "Seven").Replace("8", "Eight").Replace("9", "Nine").Replace("0", "Zero");
+                    originalTitle = line.Replace("[", "").Replace("]", "");
+                    newTitle = originalTitle.Replace("(", "_").Replace(")", "_").Replace(" ", "_").Replace("+", "_").Replace("+", "_").Replace("-", "_").Replace(".", "_").Replace("1", "One").Replace("2", "Two").Replace("3", "Three").Replace("4", "Four").Replace("5", "Five").Replace("6", "Six").Replace("7", "Seven").Replace("8", "Eight").Replace("9", "Nine").Replace("0", "Zero");
                     String MenuEntry = "\tnew_entry(\"" + originalTitle + "\", " + newTitle + ");" + System.Environment.NewLine;
                     create_menu_c += MenuEntry;
                 }
@@ -531,6 +536,11 @@ namespace Gateway_To_NTR_Converter
                     line = "\texit_spoiler();" + System.Environment.NewLine;
                     create_menu_c += line;
                 }
+                if (line.StartsWith("*"))
+                {
+                    notes += "\tstatic const char * const " + newTitle + "_note = \"" + line.Replace("*", "") + "\";" + System.Environment.NewLine;
+                    create_menu_c = create_menu_c.Replace("new_entry(\"" + originalTitle + "\", ", "new_entry_with_note(\"" + originalTitle + "\", " + newTitle + "_note, ");
+                }
             }
             System.Diagnostics.Process.Start(System.Environment.CurrentDirectory + "/pluginMenu/build.bat");
         }
@@ -542,7 +552,7 @@ namespace Gateway_To_NTR_Converter
 
         private void informationToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Version 1.0.4\n\nAll codes need to have a name, enclosed in [brackets]." + System.Environment.NewLine + System.Environment.NewLine + "If a code does not convert properly, please leave a comment on my YouTube video." + System.Environment.NewLine + System.Environment.NewLine + "The Code Checker will only check certain elements of your input to ensure the codes will convert properly. This assumes your input is still valid codes.", "Information");
+            MessageBox.Show("Version 1.0.5" + System.Environment.NewLine + System.Environment.NewLine +  "All codes need to have a name, enclosed in [brackets]." + System.Environment.NewLine + System.Environment.NewLine + "Menu Formatting:\n\t+Create a spoiler with this name (plus)\n\t-Close most recent spoiler (minus)\n\t*Note for the above code (asterisk; must be one line)" + System.Environment.NewLine + System.Environment.NewLine + "If a code does not convert properly, please leave a comment on my YouTube video." + System.Environment.NewLine + System.Environment.NewLine + "The Code Checker will only check certain elements of your input to ensure the codes will convert properly. This assumes your input is still valid codes.", "Information");
         }
 
         private void creditsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -557,12 +567,10 @@ namespace Gateway_To_NTR_Converter
 
         private void codeCheckerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string line = null;
+            String line = "";
             StringReader LineString = new StringReader(textBox1.Text);
-
             int SpaceCount = 1;
             int BracketCount = 0;
-
             while (true)
             {
                 line = LineString.ReadLine();
@@ -574,7 +582,7 @@ namespace Gateway_To_NTR_Converter
                     }
                     else
                     {
-                        MessageBox.Show("There appears to be a problem with your codes. Assuming you inputted actual codes, this is probably due to improper/missing titles or lack of space between codes. This also could be because you used a codetype that was not yet implemented.", "Results");
+                        MessageBox.Show("There appears to be a problem with your codes. Assuming you inputted actual codes, this is probably due to improper/missing titles or lack of space between codes.", "Results");
                     }
                     break;
                 }
