@@ -17,6 +17,10 @@ This is a program I made that will automatically convert Gateshark codes to NTR.
 # Advantages over other converters
 -Online support for all plugins created using this converter
 
+-Can convert codes into CTRPluginFramework
+
+-Support for folders, notes, and other menu features
+
 -Open Source
 
 -The source code of your plugin will be openly available inside of the /pluginMenu directory
@@ -28,4 +32,4 @@ This is a program I made that will automatically convert Gateshark codes to NTR.
 -All of the things listed above under "Features"
 
 # Download
-https://github.com/DarkFlare69/Gateway-To-NTR-Converter/raw/master/Gateway%20To%20NTR%20Converter/Release/Gateway%20To%20NTR%20Converter.zip
+https://github.com/DarkFlare69/Gateway-To-NTR-Converter/raw/master/Gateway%20To%20NTR%20Converter/Release/Gateway_To_NTR_Converter.zip
