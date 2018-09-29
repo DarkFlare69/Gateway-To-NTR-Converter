@@ -312,7 +312,7 @@ namespace Gateway_To_NTR_Converter
                     result += temp;
                     textBox2.Text += result;
                 }
-                if (line.StartsWith("C0000000")) // loop test
+                if (line.StartsWith("C0000000")) // loop
                 {
                     loop = true;
                     string result = new String('\t', Tabs);
@@ -330,7 +330,7 @@ namespace Gateway_To_NTR_Converter
                     result += "}" + System.Environment.NewLine;
                     textBox2.Text += result;
                 }
-                if (line.StartsWith("D1000000")) // execute loop again, work on later
+                /*if (line.StartsWith("D1000000") && loop) // execute loop again, work on later
                 {
                     string result = new String('\t', Tabs);
                     result += "continue;" + System.Environment.NewLine;
@@ -342,6 +342,16 @@ namespace Gateway_To_NTR_Converter
                         textBox2.Text += result;
                     }
                     Tabs = 1;
+                }*/
+                if (line.StartsWith("D1000000") && loop) // execute loop again
+                {
+                    string result = new String('\t', Tabs);
+                    result += "continue;" + System.Environment.NewLine;
+                    textBox2.Text += result;
+                    result = new String('\t', (Tabs - 1));
+                    result += "}" + System.Environment.NewLine;
+                    textBox2.Text += result;
+                    Tabs--;
                 }
                 if (line.StartsWith("D2000000") && Tabs != 0) // terminator
                 {
@@ -638,7 +648,7 @@ namespace Gateway_To_NTR_Converter
 
         private void informationToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Version 2.0.3" + System.Environment.NewLine + System.Environment.NewLine +  "All codes need to have a name, enclosed in [brackets]." + System.Environment.NewLine + System.Environment.NewLine + "Menu Formatting:\n\t+Create a spoiler with this name (plus)\n\t-Close most recent spoiler (minus)\n\t*Note for the above code (asterisk; must be one line)" + System.Environment.NewLine + System.Environment.NewLine + "If a code does not convert properly, please leave a comment on my YouTube video." + System.Environment.NewLine + System.Environment.NewLine + "The Code Checker will only check certain elements of your input to ensure the codes will convert properly. This assumes your input is still valid codes.", "Information");
+            MessageBox.Show("Version 2.0.5" + System.Environment.NewLine + System.Environment.NewLine +  "All codes need to have a name, enclosed in [brackets]." + System.Environment.NewLine + System.Environment.NewLine + "Menu Formatting:\n\t+Create a spoiler with this name (plus)\n\t-Close most recent spoiler (minus)\n\t*Note for the above code (asterisk; must be one line)" + System.Environment.NewLine + System.Environment.NewLine + "If a code does not convert properly, please leave a comment on my YouTube video." + System.Environment.NewLine + System.Environment.NewLine + "The Code Checker will only check certain elements of your input to ensure the codes will convert properly. This assumes your input is still valid codes.", "Information");
         }
 
         private void creditsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1012,7 +1022,7 @@ namespace Gateway_To_NTR_Converter
                     result += "}" + System.Environment.NewLine;
                     textBox2.Text += result;
                 }
-                if (line.StartsWith("D1000000")) // execute loop again, work on later
+                /*if (line.StartsWith("D1000000")) // execute loop again, work on later
                 {
                     string result = new String('\t', Tabs);
                     result += "continue;" + System.Environment.NewLine;
@@ -1024,8 +1034,17 @@ namespace Gateway_To_NTR_Converter
                         textBox2.Text += result;
                     }
                     Tabs = 1;
+                }*/
+                if (line.StartsWith("D1000000") && loop) // execute loop again
+                {
+                    string result = new String('\t', Tabs);
+                    result += "continue;" + System.Environment.NewLine;
+                    textBox2.Text += result;
+                    result = new String('\t', (Tabs - 1));
+                    result += "}" + System.Environment.NewLine;
+                    textBox2.Text += result;
+                    Tabs--;
                 }
-
                 if (line.StartsWith("D2000000") && Tabs != 0) // terminator
                 {
                     if (!loop) // do not reset offset during a loop

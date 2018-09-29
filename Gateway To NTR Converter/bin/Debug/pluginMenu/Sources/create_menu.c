@@ -65,5 +65,5 @@ char	*builder_name = "DarkFlare";
 
 void	my_menus(void)
 {
-	new_entry("code 1234", code_OneTwoThreeFour);
+	new_entry("MaxInf AP v1.5", MaxInf_AP_vOne_Five);
 }
