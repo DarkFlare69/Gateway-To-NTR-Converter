@@ -184,7 +184,7 @@ namespace Gateway_To_NTR_Converter
                 if (line.StartsWith("3")) // 32 bit greater Than
                 {
                     string result = new String('\t', Tabs);
-                    line = line.Replace(" ", ") > 0x");
+                    line = line.Replace(" ", ") < 0x");
                     var regex = new Regex(Regex.Escape("3"));
                     temp = regex.Replace(line, "if (READU32(offset + 0x", 1);
                     result += temp;
@@ -197,7 +197,7 @@ namespace Gateway_To_NTR_Converter
                 if (line.StartsWith("4")) // 32 bit less Than
                 {
                     string result = new String('\t', Tabs);
-                    line = line.Replace(" ", ") < 0x");
+                    line = line.Replace(" ", ") > 0x");
                     var regex = new Regex(Regex.Escape("4"));
                     temp = regex.Replace(line, "if (READU32(offset + 0x", 1);
                     result += temp;
@@ -236,7 +236,7 @@ namespace Gateway_To_NTR_Converter
                 if (line.StartsWith("7")) // 16 bit greater
                 {
                     string result = new String('\t', Tabs);
-                    line = line.Replace(" ", ") > 0x");
+                    line = line.Replace(" ", ") < 0x");
                     var regex = new Regex(Regex.Escape("7"));
                     temp = regex.Replace(line, "if (READU16(offset + 0x", 1);
                     result += temp;
@@ -249,7 +249,7 @@ namespace Gateway_To_NTR_Converter
                 if (line.StartsWith("8")) // 16 bit less
                 {
                     string result = new String('\t', Tabs);
-                    line = line.Replace(" ", ") < 0x");
+                    line = line.Replace(" ", ") > 0x");
                     var regex = new Regex(Regex.Escape("8"));
                     temp = regex.Replace(line, "if (READU16(offset + 0x", 1);
                     result += temp;
@@ -876,7 +876,7 @@ namespace Gateway_To_NTR_Converter
                 if (line.StartsWith("3")) // 32 bit greater Than
                 {
                     string result = new String('\t', Tabs);
-                    line = line.Replace(" ", ", cmp32) && cmp32 > 0x");
+                    line = line.Replace(" ", ", cmp32) && cmp32 < 0x");
                     var regex = new Regex(Regex.Escape("3"));
                     temp = regex.Replace(line, "if (Process::Read32(offset + 0x", 1);
                     result += temp;
@@ -889,7 +889,7 @@ namespace Gateway_To_NTR_Converter
                 if (line.StartsWith("4")) // 32 bit less Than
                 {
                     string result = new String('\t', Tabs);
-                    line = line.Replace(" ", ", cmp32) && cmp32 < 0x");
+                    line = line.Replace(" ", ", cmp32) && cmp32 > 0x");
                     var regex = new Regex(Regex.Escape("4"));
                     temp = regex.Replace(line, "if (Process::Read32(offset + 0x", 1);
                     result += temp;
@@ -928,7 +928,7 @@ namespace Gateway_To_NTR_Converter
                 if (line.StartsWith("7")) // 16 bit greater
                 {
                     string result = new String('\t', Tabs);
-                    line = line.Replace(" ", ", cmp16) && cmp16 > 0x");
+                    line = line.Replace(" ", ", cmp16) && cmp16 < 0x");
                     var regex = new Regex(Regex.Escape("7"));
                     temp = regex.Replace(line, "if (Process::Read16(offset + 0x", 1);
                     result += temp;
@@ -941,7 +941,7 @@ namespace Gateway_To_NTR_Converter
                 if (line.StartsWith("8")) // 16 bit less
                 {
                     string result = new String('\t', Tabs);
-                    line = line.Replace(" ", ", cmp16) && cmp16 < 0x");
+                    line = line.Replace(" ", ", cmp16) && cmp16 > 0x");
                     var regex = new Regex(Regex.Escape("8"));
                     temp = regex.Replace(line, "if (Process::Read16(offset + 0x", 1);
                     result += temp;

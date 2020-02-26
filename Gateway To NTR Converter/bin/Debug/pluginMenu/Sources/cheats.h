@@ -3,6 +3,6 @@
 
 #include "plugin.h"
 
-void	MaxInf_AP_vOne_Five(void);
+void	Code(void);
 
 #endif

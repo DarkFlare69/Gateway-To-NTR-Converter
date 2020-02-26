@@ -7,3 +7,4 @@ D:\VS\Gateway To NTR Converter\Gateway To NTR Converter\obj\Debug\Gateway To NTR
 D:\VS\Gateway To NTR Converter\Gateway To NTR Converter\obj\Debug\Gateway To NTR Converter.csproj.CoreCompileInputs.cache
 D:\VS\Gateway To NTR Converter\Gateway To NTR Converter\obj\Debug\Gateway To NTR Converter.exe
 D:\VS\Gateway To NTR Converter\Gateway To NTR Converter\obj\Debug\Gateway To NTR Converter.pdb
+D:\VS\Gateway To NTR Converter\Gateway To NTR Converter\obj\Debug\Gateway To NTR Converter.csprojAssemblyReference.cache
